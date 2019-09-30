@@ -20,6 +20,18 @@ const BB = require("bluebird");
 const credentials = require("../provider/credentials");
 const cf = require("cloudflare-workers-toolkit");
 
+function checkRequiredCredentials(requiredCredentials) {
+  const envCreds = credentials.get();
+
+  requiredCredentials.forEach(requiredCredential => {
+    if (!envCreds[requiredCredential]) {
+      return BB.reject(
+        `Missing mandatory environment variable: CLOUDFLARE_${requiredCredential.toUpperCase()}.`
+      );
+    }
+  });
+}
+
 module.exports = {
   async checkAccountType() {
     const zoneId = this.provider.config.zoneId;
@@ -30,19 +42,8 @@ module.exports = {
       })
       .then(this.checkIfMultiScript)
   },
-  
-  checkRequiredCredentials(requiredCredentials) {
-    requiredCredentials.forEach(requiredCredential => {
-      if (!envCreds[requiredCredential]) {
-        return BB.reject(
-          `Missing mandatory environment variable: CLOUDFLARE_${requiredCredential.toUpperCase()}.`
-        );
-      }
-    });
-  },
 
   checkAllEnvironmentVariables() {
-    const envCreds = credentials.get();
     const requiredCredentials = credentials.REQUIRED_CREDENTIALS;
     const requiredCredentialsToken = credentials.REQUIRED_CREDENTIALS_TOKEN;
 
