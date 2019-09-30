@@ -29,7 +29,8 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
       headers: {
         "Authorization": `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`
       },
-      method: method
+      method: method,
+      credentials: 'include'
     }
   } else {
     options = {
