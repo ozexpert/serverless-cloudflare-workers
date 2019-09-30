@@ -43,10 +43,6 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
       method: method
     }
   }
-  console.log(options);
-  console.log(url);
-  console.log(body);
-
   if (contentType) {
     options["headers"]["Content-Type"] = contentType;
   }
