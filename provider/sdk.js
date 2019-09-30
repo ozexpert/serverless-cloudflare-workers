@@ -30,6 +30,9 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
     },
     method: method
   };
+  if (process.env.CLOUDFLARE_API_TOKEN) {
+    options["headers"]["Authorization"] = `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`;
+  }
   if (contentType) {
     options["headers"]["Content-Type"] = contentType;
   }

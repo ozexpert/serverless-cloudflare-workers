@@ -30,10 +30,8 @@ module.exports = {
       })
       .then(this.checkIfMultiScript)
   },
-
-  checkAllEnvironmentVariables() {
-    const envCreds = credentials.get();
-    const requiredCredentials = credentials.REQUIRED_CREDENTIALS;
+  
+  checkRequiredCredentials(requiredCredentials) {
     requiredCredentials.forEach(requiredCredential => {
       if (!envCreds[requiredCredential]) {
         return BB.reject(
@@ -41,6 +39,18 @@ module.exports = {
         );
       }
     });
+  },
+
+  checkAllEnvironmentVariables() {
+    const envCreds = credentials.get();
+    const requiredCredentials = credentials.REQUIRED_CREDENTIALS;
+    const requiredCredentialsToken = credentials.REQUIRED_CREDENTIALS_TOKEN;
+
+    if (requiredCredentialsToken.length > 0) {
+      checkRequiredCredentials(requiredCredentialsToken);
+    } else {
+      checkRequiredCredentials(requiredCredentials);
+    }
   },
   checkIfMultiScript({ success, errors, result }) {
     if (!success) {

@@ -19,23 +19,33 @@
 "use strict";
 
 const ENV_PARAMS = ["CLOUDFLARE_AUTH_KEY", "CLOUDFLARE_AUTH_EMAIL"];
-const REQUIRED_CREDENTIALS = ENV_PARAMS.map(s => {
-  // ["auth_key", "email"]
-  const a = s.split("CLOUDFLARE_")[1];
-  return a.toLowerCase();
-});
+const ENV_PARAMS_TOKEN = ["CLOUDFLARE_API_TOKEN"];
+const REQUIRED_CREDENTIALS = credsToLowerCase(ENV_PARAMS);
+const REQUIRED_CREDENTIALS_TOKEN = credsToLowerCase(ENV_PARAMS_TOKEN);
+
+function credsToLowerCase(env_params) {
+  return env_params.map(s => {
+    // ["auth_key", "email"]
+    const a = s.split("CLOUDFLARE_")[1];
+    return a.toLowerCase();
+  });
+}
+
 function get() {
   const envProps = {};
-  ENV_PARAMS.forEach(envName => {
-    if (process.env[envName]) {
-      envProps[envName.split("CLOUDFLARE_")[1].toLowerCase()] =
-        process.env[envName];
-    }
+  [ENV_PARAMS, ENV_PARAMS_TOKEN].forEach(params => {
+    params.forEach(envName => {
+      if (process.env[envName]) {
+        envProps[envName.split("CLOUDFLARE_")[1].toLowerCase()] =
+          process.env[envName];
+      }
+    });
   });
   return envProps;
 }
 
 module.exports = {
   get,
-  REQUIRED_CREDENTIALS
+  REQUIRED_CREDENTIALS,
+  REQUIRED_CREDENTIALS_TOKEN
 };
