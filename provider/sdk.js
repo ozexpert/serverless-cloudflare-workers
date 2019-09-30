@@ -23,13 +23,26 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
     url = `https://api.cloudflare.com/client/v4${url}`;
   }
   
-  let options = {
-    headers: {
-      "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL,
-      "X-Auth-Key": process.env.CLOUDFLARE_AUTH_KEY
-    },
-    method: method
-  };
+  const api_token = process.env.CLOUDFLARE_API_TOKEN;
+
+  let options = {};
+  if (api_token) {
+    options = {
+      headers: {
+        "Authorization": `Bearer ${api_token}`
+      },
+      method: method,
+      credentials: 'include'
+    }
+  } else {
+    options = {
+      headers: {
+        "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL,
+        "X-Auth-Key": process.env.CLOUDFLARE_AUTH_KEY
+      },
+      method: method
+    }
+  }
   if (contentType) {
     options["headers"]["Content-Type"] = contentType;
   }
