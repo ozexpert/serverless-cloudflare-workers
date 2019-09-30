@@ -20,7 +20,7 @@
 
 const ENV_PARAMS = ["CLOUDFLARE_AUTH_KEY", "CLOUDFLARE_AUTH_EMAIL"];
 const ENV_PARAMS_TOKEN = ["CLOUDFLARE_API_TOKEN"];
-const REQUIRED_CREDENTIALS = process.env.CLOUDFLARE_API_TOKEN ? credsToLowerCase(ENV_PARAMS_TOKEN) : credsToLowerCase(ENV_PARAMS);
+const REQUIRED_CREDENTIALS = (process.env.CLOUDFLARE_API_TOKEN != null) ? credsToLowerCase(ENV_PARAMS_TOKEN) : credsToLowerCase(ENV_PARAMS);
 
 function credsToLowerCase(env_params) {
   return env_params.map(s => {
