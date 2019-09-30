@@ -23,11 +23,13 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
     url = `https://api.cloudflare.com/client/v4${url}`;
   }
   
+  const api_token = process.env.CLOUDFLARE_API_TOKEN;
+
   let options = {};
-  if (process.env.CLOUDFLARE_API_TOKEN) {
+  if (api_token) {
     options = {
       headers: new Headers({
-        "Authorization": `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`
+        "Authorization": `Bearer ${api_token}`
       }),
       method: method,
       credentials: 'include'
@@ -41,6 +43,10 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
       method: method
     }
   }
+  console.log(options);
+  console.log(url);
+  console.log(body);
+
   if (contentType) {
     options["headers"]["Content-Type"] = contentType;
   }
