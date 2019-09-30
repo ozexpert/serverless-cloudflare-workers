@@ -19,11 +19,16 @@
 "use strict";
 
 const ENV_PARAMS = ["CLOUDFLARE_AUTH_KEY", "CLOUDFLARE_AUTH_EMAIL"];
-const REQUIRED_CREDENTIALS = ENV_PARAMS.map(s => {
-  // ["auth_key", "email"]
-  const a = s.split("CLOUDFLARE_")[1];
-  return a.toLowerCase();
-});
+const ENV_PARAMS_TOKEN = ["CLOUDFLARE_API_TOKEN"];
+const REQUIRED_CREDENTIALS = process.env.CLOUDFLARE_API_TOKEN ? credsToLowerCase(ENV_PARAMS_TOKEN) : credsToLowerCase(ENV_PARAMS);
+
+function credsToLowerCase(env_params) {
+  return env_params.map(s => {
+    // ["auth_key", "email"]
+    const a = s.split("CLOUDFLARE_")[1];
+    return a.toLowerCase();
+  });
+}
 function get() {
   const envProps = {};
   ENV_PARAMS.forEach(envName => {
