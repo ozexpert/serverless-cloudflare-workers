@@ -31,8 +31,7 @@ const cfApiCall = async ({ url, method, contentType = null, body = null }) => {
       headers: {
         "Authorization": `Bearer ${api_token}`
       },
-      method: method,
-      credentials: 'include'
+      method: method
     }
   } else {
     options = {
